@@ -10,12 +10,12 @@ Halaman pertama yang dilihat user setelah login. Berisi ringkasan kondisi hari i
 ┌─────────────────────────────────────┐
 │  Selamat pagi, Agung!               │
 │  Kamu sudah selesaikan 2 dari 5     │
-│  habit hari ini. Ada 1 task         │
+│  Habit Kamu. Ada 1 task         │
 │  deadline besok, jangan lupa!       │
 ├─────────────────────────────────────┤
 │  [Habit: 2/5]    [Task Pending: 3]  │
 ├─────────────────────────────────────┤
-│  Progress Habit Hari Ini            │
+│  Progress Habit Kamu            │
 │  ████░░░░░░  40%                    │
 ├─────────────────────────────────────┤
 │  Task Mendesak                      │

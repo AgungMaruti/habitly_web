@@ -191,10 +191,10 @@ habit selesai < 50%     → "Baru X habit selesai, masih ada Y lagi!"
 ### Streak Label (Habit Card)
 
 ```
-streak >= 7 hari  → 🔥 "X Day Streak!"
-streak >= 3 hari  → ✨ "Konsisten X hari!"
-habit baru        → 🆕 "Habit baru"
-sering dilewat    → ⚠️  "Perlu perhatian"
+streak >= 7 hari  → "X Day Streak!"
+streak >= 3 hari  → "Konsisten X hari!"
+habit baru        → "Habit baru"
+sering dilewat    → "Perlu perhatian"
 ```
 
 ---

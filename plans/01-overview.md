@@ -1,22 +1,22 @@
 # 01 — Project Overview
-
+                                    
 ## Identitas Project
 
 | | |
 |---|---|
-| **Nama Aplikasi** | Rutino |
+| **Nama Aplikasi** | Retino |
 | **Tema** | Pengembangan Aplikasi Web dengan Penerapan Metode Rule-Based untuk Sistem Rekomendasi Otomatis |
-| **Judul** | Rancang Bangun Aplikasi Web Rutino: Manajemen Kebiasaan dan Tugas Harian dengan Rekomendasi Otomatis Berbasis Rule-Based AI |
+| **Judul** | Rancang Bangun Aplikasi Web Retino: Manajemen Kebiasaan dan Tugas Harian dengan Rekomendasi Otomatis Berbasis Rule-Based AI |
 | **Jurusan** | Sistem Informasi |
 | **Konteks** | Seminar Proposal (Sempro) |
 
 ---
 
-## Apa itu Rutino?
+## Apa itu Retino?
 
-Rutino adalah aplikasi web untuk membantu user **mengelola habit harian dan task** secara lebih terstruktur, dengan bantuan insight otomatis yang terasa personal.
+Retino adalah aplikasi web untuk membantu user **mengelola habit harian dan task** secara lebih terstruktur, dengan bantuan insight otomatis yang terasa personal.
 
-Berbeda dari to-do list biasa, Rutino punya:
+Berbeda dari to-do list biasa, Retino punya:
 - Pemisahan antara **Habit** (kebiasaan rutin) dan **Task** (tugas dengan deadline)
 - **AI rule-based** yang membantu user tanpa perlu input manual berlebihan
 - **Insight harian** yang berubah sesuai kondisi user hari itu
@@ -79,7 +79,7 @@ Tema  : Pengembangan Aplikasi Web dengan Penerapan
         Metode Rule-Based untuk Sistem Rekomendasi Otomatis
         → Umum, menggambarkan topik & metode
 
-  └── Judul : Rancang Bangun Aplikasi Web Rutino: Manajemen 
+  └── Judul : Rancang Bangun Aplikasi Web Retino: Manajemen 
               Kebiasaan dan Tugas Harian dengan Rekomendasi 
               Otomatis Berbasis Rule-Based AI
               → Spesifik, turunan dari tema

@@ -1,0 +1,161 @@
+export type Lang = "id" | "en"
+
+export const translations = {
+  // Navigation
+  dashboard: { id: "Dashboard", en: "Dashboard" },
+  myHabits: { id: "My Habits", en: "My Habits" },
+  myTasks: { id: "My Tasks", en: "My Tasks" },
+  statistics: { id: "Statistics", en: "Statistics" },
+  settings: { id: "Settings", en: "Settings" },
+
+  // Dashboard
+  dashboardSubtitle: { id: "Selamat datang kembali!", en: "Welcome back!" },
+  todayInsight: { id: "Insight Hari Ini 🔥", en: "Today's Insight 🔥" },
+  todayHabits: { id: "Habit Kamu", en: "Today's Habits" },
+  upcomingTasks: { id: "Task Mendatang", en: "Upcoming Tasks" },
+  viewAll: { id: "Lihat Semua", en: "View All" },
+  progressToday: { id: "Progress hari ini", en: "Today's progress" },
+  noHabits: { id: "Belum ada habit.", en: "No habits yet." },
+  addNow: { id: "Tambah sekarang", en: "Add now" },
+  noPendingTasks: { id: "Tidak ada task pending.", en: "No pending tasks." },
+  addTask: { id: "Tambah task", en: "Add task" },
+  completed: { id: "selesai", en: "completed" },
+  needAttention: { id: "butuh perhatian", en: "need attention" },
+  daysInRow: { id: "hari berturut-turut", en: "days in a row" },
+
+  // Stats cards
+  habitToday: { id: "Habit Kamu", en: "Today's Habits" },
+  taskPending: { id: "Task Pending", en: "Pending Tasks" },
+  longestStreak: { id: "Streak Terpanjang", en: "Longest Streak" },
+  completionRate: { id: "Completion Rate", en: "Completion Rate" },
+
+  // Habits page
+  habitsTitle: { id: "My Habits", en: "My Habits" },
+  habitsSubtitle: { id: "Kelola dan pantau habit harianmu", en: "Manage and track your daily habits" },
+  addHabit: { id: "Tambah Habit", en: "Add Habit" },
+  noHabitsYet: { id: "Belum ada habit", en: "No habits yet" },
+  noHabitsDesc: { id: "Mulai bangun kebiasaan baik sekarang!", en: "Start building good habits now!" },
+  habitName: { id: "Nama Habit", en: "Habit Name" },
+  habitNamePlaceholder: { id: "Contoh: Olahraga 30 menit", en: "Example: Exercise 30 minutes" },
+  category: { id: "Kategori", en: "Category" },
+  reminderTime: { id: "Waktu Pengingat", en: "Reminder Time" },
+  cancel: { id: "Batal", en: "Cancel" },
+  save: { id: "Simpan", en: "Save" },
+  saving: { id: "Menyimpan...", en: "Saving..." },
+  allCategories: { id: "Semua Kategori", en: "All Categories" },
+  allStatus: { id: "Semua Status", en: "All Status" },
+  done: { id: "Selesai", en: "Done" },
+  notDone: { id: "Belum", en: "Not Done" },
+  streakDays: { id: "hari streak", en: "day streak" },
+
+  // Tasks page
+  tasksTitle: { id: "My Tasks", en: "My Tasks" },
+  tasksSubtitle: { id: "Kelola semua tugasmu", en: "Manage all your tasks" },
+  addTaskBtn: { id: "Tambah Task", en: "Add Task" },
+  noTasksYet: { id: "Belum ada task", en: "No tasks yet" },
+  noTasksDesc: { id: "Tambah task pertamamu sekarang!", en: "Add your first task now!" },
+  taskTitle: { id: "Judul Task", en: "Task Title" },
+  taskTitlePlaceholder: { id: "Apa yang perlu dilakukan?", en: "What needs to be done?" },
+  description: { id: "Deskripsi", en: "Description" },
+  descriptionPlaceholder: { id: "Detail task...", en: "Task details..." },
+  deadline: { id: "Deadline", en: "Deadline" },
+  priority: { id: "Prioritas", en: "Priority" },
+  high: { id: "Tinggi", en: "High" },
+  medium: { id: "Sedang", en: "Medium" },
+  low: { id: "Rendah", en: "Low" },
+  allPriorities: { id: "Semua Prioritas", en: "All Priorities" },
+  pending: { id: "Pending", en: "Pending" },
+
+  // Statistics
+  statisticsTitle: { id: "Statistics", en: "Statistics" },
+  statisticsSubtitle: { id: "Pantau perkembangan habit dan taskmu", en: "Track your habit and task progress" },
+  weeklyOverview: { id: "Overview Mingguan", en: "Weekly Overview" },
+  habitsCompleted: { id: "Habit Selesai", en: "Habits Completed" },
+  tasksCompleted: { id: "Task Selesai", en: "Tasks Completed" },
+  currentStreak: { id: "Streak Saat Ini", en: "Current Streak" },
+  days: { id: "hari", en: "days" },
+  thisWeek: { id: "minggu ini", en: "this week" },
+
+  // Settings
+  settingsTitle: { id: "Settings", en: "Settings" },
+  settingsSubtitle: { id: "Kelola preferensi aplikasimu", en: "Manage your app preferences" },
+  profile: { id: "Profil", en: "Profile" },
+  profileDesc: { id: "Kelola informasi profil akunmu", en: "Manage your account profile information" },
+  fullName: { id: "Nama Lengkap", en: "Full Name" },
+  email: { id: "Email", en: "Email" },
+  saveChanges: { id: "Simpan Perubahan", en: "Save Changes" },
+  saving2: { id: "Menyimpan...", en: "Saving..." },
+  logout: { id: "Keluar", en: "Log Out" },
+  notifications: { id: "Notifikasi", en: "Notifications" },
+  notifDesc: { id: "Atur preferensi notifikasimu", en: "Manage your notification preferences" },
+  habitReminder: { id: "Pengingat Habit", en: "Habit Reminder" },
+  habitReminderDesc: { id: "Dapatkan pengingat untuk menyelesaikan habit harianmu", en: "Get reminders to complete your daily habits" },
+  deadlineReminder: { id: "Reminder Deadline", en: "Deadline Reminder" },
+  deadlineReminderDesc: { id: "Notifikasi saat deadline task mendekat", en: "Notifications when task deadlines approach" },
+  dailyInsight: { id: "Insight Harian", en: "Daily Insight" },
+  dailyInsightDesc: { id: "Terima insight dan tips produktivitas setiap hari", en: "Receive daily productivity insights and tips" },
+  achievementsNotif: { id: "Pencapaian", en: "Achievements" },
+  achievementsNotifDesc: { id: "Notifikasi saat kamu mencapai milestone baru", en: "Notifications when you reach new milestones" },
+  appearance: { id: "Tampilan", en: "Appearance" },
+  appearanceDesc: { id: "Sesuaikan tampilan aplikasi", en: "Customize the app appearance" },
+  theme: { id: "Tema", en: "Theme" },
+  themeDesc: { id: "Pilih tema tampilan yang kamu suka", en: "Choose your preferred theme" },
+  themeLight: { id: "Terang", en: "Light" },
+  themeDark: { id: "Gelap", en: "Dark" },
+  themeSystem: { id: "Ikuti Perangkat", en: "Follow Device" },
+  languageRegion: { id: "Bahasa & Wilayah", en: "Language & Region" },
+  languageRegionDesc: { id: "Atur preferensi bahasa dan format", en: "Set language and format preferences" },
+  language: { id: "Bahasa", en: "Language" },
+  languageDesc: { id: "Pilih bahasa tampilan aplikasi", en: "Choose the app display language" },
+  dateFormat: { id: "Format Tanggal", en: "Date Format" },
+  dateFormatDesc: { id: "Format tampilan tanggal", en: "Date display format" },
+  privacySecurity: { id: "Privasi & Keamanan", en: "Privacy & Security" },
+  privacySecurityDesc: { id: "Kelola keamanan akunmu", en: "Manage your account security" },
+  exportData: { id: "Export Data", en: "Export Data" },
+  dangerZone: { id: "Zona Berbahaya", en: "Danger Zone" },
+  dangerZoneDesc: { id: "Tindakan di sini tidak dapat dibatalkan", en: "Actions here cannot be undone" },
+  deleteAllData: { id: "Hapus Semua Data", en: "Delete All Data" },
+  deleteAllDataDesc: { id: "Hapus semua habit, task, dan statistikmu", en: "Delete all your habits, tasks, and statistics" },
+  deleteAccount: { id: "Hapus Akun", en: "Delete Account" },
+  deleteAccountDesc: { id: "Hapus akunmu secara permanen", en: "Permanently delete your account" },
+  deleteDataBtn: { id: "Hapus Data", en: "Delete Data" },
+  deleteAccountBtn: { id: "Hapus Akun", en: "Delete Account" },
+
+  // Sidebar
+  sidebarManagePrefs: { id: "Kelola preferensi aplikasimu", en: "Manage your app preferences" },
+
+  // Navbar
+  searchPlaceholder: { id: "Cari habit atau task...", en: "Search habits or tasks..." },
+  add: { id: "Tambah", en: "Add" },
+
+  // Common
+  loading: { id: "Memuat...", en: "Loading..." },
+  error: { id: "Terjadi kesalahan", en: "An error occurred" },
+  confirm: { id: "Konfirmasi", en: "Confirm" },
+
+  // Login/Register
+  loginTitle: { id: "Masuk ke akun kamu", en: "Sign in to your account" },
+  password: { id: "Password", en: "Password" },
+  loginBtn: { id: "Masuk", en: "Sign In" },
+  loggingIn: { id: "Masuk...", en: "Signing in..." },
+  noAccount: { id: "Belum punya akun?", en: "Don't have an account?" },
+  register: { id: "Daftar", en: "Register" },
+  loginError: { id: "Email atau password salah", en: "Invalid email or password" },
+  registerTitle: { id: "Buat akun baru", en: "Create new account" },
+  registerBtn: { id: "Daftar", en: "Register" },
+  registering: { id: "Mendaftar...", en: "Registering..." },
+  hasAccount: { id: "Sudah punya akun?", en: "Already have an account?" },
+  signIn: { id: "Masuk", en: "Sign In" },
+  verifyEmailTitle: { id: "Cek email kamu untuk verifikasi", en: "Check your email for verification" },
+  verifyEmailDesc: { id: "Kami sudah mengirim link verifikasi ke", en: "We've sent a verification link to" },
+  backToLogin: { id: "Kembali ke Login", en: "Back to Login" },
+  nameLabel: { id: "Nama Lengkap", en: "Full Name" },
+  namePlaceholder: { id: "Nama kamu", en: "Your name" },
+  emailPlaceholder: { id: "kamu@email.com", en: "you@email.com" },
+} as const
+
+export type TranslationKey = keyof typeof translations
+
+export function t(key: TranslationKey, lang: Lang): string {
+  return translations[key][lang]
+}
