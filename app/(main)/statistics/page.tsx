@@ -12,71 +12,85 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
+  Cell,
   LabelList,
+  Tooltip,
 } from "recharts"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { t } from "@/lib/i18n"
+import { useTheme } from "next-themes"
 
-const TICK = { fontSize: 11, fill: '#888' }
+const BASE_COLORS = {
+  success: "#22c55e",
+  warning: "#f59e0b",
+  destructive: "#ef4444",
+}
 
-const TrendTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload?.length) return null
-  const value = payload[0].value
+function getChartColors(isDark: boolean) {
+  return {
+    ...BASE_COLORS,
+    primary: "hsl(var(--primary))",
+    muted: isDark ? "#475569" : "#d4d4d4",          // dark: slate-600, light: gray-300
+    tick: isDark ? "#a8a8a8" : "#525252",             // dark: terang, light: gelap
+    grid: isDark ? "#404040" : "#e5e5e5",             // dark: subtle, light: subtle
+    label: isDark ? "#a8a8a8" : "#525252",
+  }
+}
+
+function ChartLegend({ items }: { items: { color: string; label: string }[] }) {
   return (
-    <div
-      className="rounded-lg border px-3 py-2 text-center shadow-lg text-sm"
-      style={{
-        backgroundColor: 'hsl(var(--card))',
-        borderColor: 'hsl(var(--border))',
-        color: 'hsl(var(--foreground))',
-      }}
-    >
-      <div className="font-medium mb-1" style={{ fontWeight: 500 }}>{label}</div>
-      <div>{value}%</div>
+    <div className="flex flex-wrap justify-center gap-4 mt-3">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-center gap-1.5 text-xs text-foreground/60">
+          <span 
+            className="inline-block w-3 h-3 rounded-sm shrink-0" 
+            style={{ backgroundColor: item.color }}
+          />
+          {item.label}
+        </div>
+      ))}
     </div>
-  )
-}
-const TOOLTIP_STYLE = {
-  contentStyle: {
-    backgroundColor: "hsl(var(--card))",
-    border: "1px solid hsl(var(--border))",
-    borderRadius: "8px",
-    textAlign: "center" as const,
-    color: "hsl(var(--foreground))",
-  },
-  labelStyle: { color: "hsl(var(--foreground))", fontWeight: 500 },
-  itemStyle: { textAlign: "center" as const, color: "hsl(var(--foreground))" },
-  position: { y: 80 } as { x?: number; y?: number },
-}
-
-const CenterLabel = (props: any) => {
-  const { x, y, width, height, value } = props
-  if (!value || height < 24) return null
-  const cx = x + width / 2
-  const cy = y + height / 2
-  return (
-    <text
-      x={cx}
-      y={cy}
-      textAnchor="middle"
-      dominantBaseline="central"
-      fill="#000"
-      fontSize={11}
-      fontWeight={600}
-      pointerEvents="none"
-    >
-      {value}
-    </text>
   )
 }
 
 export default function StatisticsPage() {
   const { weeklyData, monthlyTrend, totalStreak, avgCompletion, taskStats, loading } = useStatistics()
   const { lang } = useLanguage()
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
+  const C = getChartColors(isDark)
+
+  const chartConfig = {
+    tick: { fontSize: 11, fill: C.tick },
+    grid: { stroke: C.grid, strokeDasharray: "3 3" },
+    radius: [4, 4, 0, 0] as [number, number, number, number],
+  }
+
+  const labelProps = {
+    position: "top" as const,
+    fill: C.label,
+    fontSize: 12,
+    fontWeight: 600,
+  }
+
+function ChartLegend({ items }: { items: { color: string; label: string }[] }) {
+  return (
+    <div className="flex flex-wrap justify-center gap-4 mt-3">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-center gap-1.5 text-xs text-foreground/60">
+          <span 
+            className="inline-block w-3 h-3 rounded-sm shrink-0" 
+            style={{ backgroundColor: item.color }}
+          />
+          {item.label}
+        </div>
+      ))}
+    </div>
+  )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -89,7 +103,7 @@ export default function StatisticsPage() {
       <div className="p-4 md:p-6 space-y-6">
         {/* Stats Overview — Habits */}
         <div>
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Habit</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">{t('habit', lang)}</h2>
           <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             <StatsCards
               title={t('longestStreak', lang)}
@@ -106,13 +120,13 @@ export default function StatisticsPage() {
             <StatsCards
               title={t('habitsCompleted', lang)}
               value={weeklyData.reduce((acc, d) => acc + d.completed, 0)}
-              subtitle="7 hari terakhir"
+              subtitle={t('last7Days', lang)}
               icon={TrendingUp}
             />
             <StatsCards
-              title="Hari Aktif"
+              title={t('activeDays', lang)}
               value={weeklyData.filter(d => d.completed > 0).length}
-              subtitle="dari 7 hari"
+              subtitle={t('outOf7Days', lang)}
               icon={Calendar}
             />
           </div>
@@ -120,30 +134,30 @@ export default function StatisticsPage() {
 
         {/* Stats Overview — Tasks */}
         <div>
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Task</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">{t('task', lang)}</h2>
           <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             <StatsCards
-              title="Total Task"
+              title={t('totalTask', lang)}
               value={taskStats.total}
-              subtitle="semua task"
+              subtitle={t('allTasks', lang)}
               icon={CheckSquare}
             />
             <StatsCards
-              title="Task Selesai"
+              title={t('taskCompleted', lang)}
               value={taskStats.completed}
               subtitle={`${taskStats.completionRate}% completion`}
               icon={Target}
             />
             <StatsCards
-              title="Task Pending"
+              title={t('taskPending', lang)}
               value={taskStats.pending}
-              subtitle="belum selesai"
+              subtitle={t('notCompleted', lang)}
               icon={Clock}
             />
             <StatsCards
-              title="Prioritas Tinggi"
+              title={t('highPriority', lang)}
               value={taskStats.high}
-              subtitle="task high priority"
+              subtitle={t('highPrioritySubtitle', lang)}
               icon={AlertTriangle}
             />
           </div>
@@ -151,17 +165,17 @@ export default function StatisticsPage() {
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList className="w-full">
-            <TabsTrigger value="overview" className="flex-1">Habit</TabsTrigger>
-            <TabsTrigger value="tasks" className="flex-1">Task</TabsTrigger>
-            <TabsTrigger value="weekly" className="flex-1">Trend</TabsTrigger>
+            <TabsTrigger value="overview" className="flex-1">{t('habit', lang)}</TabsTrigger>
+            <TabsTrigger value="tasks" className="flex-1">{t('task', lang)}</TabsTrigger>
+            <TabsTrigger value="weekly" className="flex-1">{t('trend', lang)}</TabsTrigger>
           </TabsList>
 
           {/* Habit Tab */}
           <TabsContent value="overview" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Habit Mingguan</CardTitle>
-                <CardDescription>Jumlah habit yang diselesaikan per hari (7 hari terakhir)</CardDescription>
+                <CardTitle className="text-lg">{t('habitWeeklyTitle', lang)}</CardTitle>
+                <CardDescription>{t('habitWeeklySubtitle', lang)}</CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -170,21 +184,34 @@ export default function StatisticsPage() {
                   </div>
                 ) : weeklyData.every(d => d.completed === 0) ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <p className="text-muted-foreground text-sm">Belum ada data minggu ini</p>
-                    <p className="text-muted-foreground/60 text-xs mt-1">Selesaikan habit untuk melihat grafik</p>
+                    <p className="text-muted-foreground text-sm">{t('noHabitsYet', lang)}</p>
+                    <p className="text-muted-foreground/60 text-xs mt-1">{t('noHabitsDesc', lang)}</p>
                   </div>
                 ) : (
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={weeklyData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
-                        <XAxis dataKey="day" tick={TICK} />
-                        <YAxis tick={TICK} allowDecimals={false} />
-                        <Tooltip {...TOOLTIP_STYLE} cursor={false} />
-                        <Bar dataKey="completed" fill="#1af9169a" radius={[4, 4, 0, 0]} name="Habit Selesai" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <>
+                    <div className="h-[220px] sm:h-[240px] md:h-[280px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                         <BarChart data={weeklyData} margin={{ top: 20, right: 8, left: -20, bottom: 0 }}>
+                          <CartesianGrid {...chartConfig.grid} />
+                          <XAxis dataKey="day" tick={chartConfig.tick} />
+                          <YAxis tick={chartConfig.tick} allowDecimals={false} />
+                          <Bar dataKey="completed" radius={chartConfig.radius}>
+                            {weeklyData.map((entry, index) => (
+                              <Cell 
+                                key={`cell-${index}`} 
+                                fill={entry.completed > 0 ? C.success : C.muted}
+                              />
+                            ))}
+                            <LabelList dataKey="completed" {...labelProps} />
+                          </Bar>
+                         </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <ChartLegend items={[
+                      { color: C.success, label: t('done', lang) },
+                      { color: C.muted, label: t('noData', lang) },
+                    ]} />
+                  </>
                 )}
               </CardContent>
             </Card>
@@ -194,8 +221,8 @@ export default function StatisticsPage() {
           <TabsContent value="tasks" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Distribusi Task per Prioritas</CardTitle>
-                <CardDescription>Jumlah task berdasarkan tingkat prioritas</CardDescription>
+                <CardTitle className="text-lg">{t('taskDistTitle', lang)}</CardTitle>
+                <CardDescription>{t('taskDistSubtitle', lang)}</CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -204,36 +231,50 @@ export default function StatisticsPage() {
                   </div>
                 ) : taskStats.total === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <p className="text-muted-foreground text-sm">Belum ada task</p>
-                    <p className="text-muted-foreground/60 text-xs mt-1">Tambahkan task untuk melihat grafik</p>
+                    <p className="text-muted-foreground text-sm">{t('noTasksYet', lang)}</p>
+                    <p className="text-muted-foreground/60 text-xs mt-1">{t('noTasksDesc', lang)}</p>
                   </div>
                 ) : (
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={[
-                          { label: "High", count: taskStats.high },
-                          { label: "Medium", count: taskStats.medium },
-                          { label: "Low", count: taskStats.low },
-                        ]}
-                        margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
-                        <XAxis dataKey="label" tick={TICK} />
-                        <YAxis tick={TICK} allowDecimals={false} />
-                        <Bar dataKey="count" fill="#1af9169a" radius={[4, 4, 0, 0]} name="Jumlah Task">
-                          <LabelList dataKey="count" content={<CenterLabel />} />
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <>
+                    <div className="h-[220px] sm:h-[240px] md:h-[280px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={[
+                            { label: t('high', lang), count: taskStats.high },
+                            { label: t('medium', lang), count: taskStats.medium },
+                            { label: t('low', lang), count: taskStats.low },
+                          ]}
+                          margin={{ top: 20, right: 8, left: -20, bottom: 0 }}
+                        >
+                          <CartesianGrid {...chartConfig.grid} />
+                          <XAxis dataKey="label" tick={chartConfig.tick} />
+                          <YAxis tick={chartConfig.tick} allowDecimals={false} />
+                          <Bar dataKey="count" radius={chartConfig.radius}>
+                            {[
+                              C.destructive,
+                              C.warning,
+                              C.muted,
+                            ].map((color, index) => (
+                              <Cell key={`cell-${index}`} fill={color} />
+                            ))}
+                            <LabelList dataKey="count" {...labelProps} />
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <ChartLegend items={[
+                      { color: C.destructive, label: t('high', lang) },
+                      { color: C.warning, label: t('medium', lang) },
+                      { color: C.muted, label: t('low', lang) },
+                    ]} />
+                  </>
                 )}
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Status Task</CardTitle>
-                <CardDescription>Perbandingan task selesai vs pending</CardDescription>
+                <CardTitle className="text-lg">{t('taskStatusTitle', lang)}</CardTitle>
+                <CardDescription>{t('taskStatusSubtitle', lang)}</CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -241,24 +282,36 @@ export default function StatisticsPage() {
                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                   </div>
                 ) : (
-                  <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={[
-                          { label: "Selesai", count: taskStats.completed },
-                          { label: "Pending", count: taskStats.pending },
-                        ]}
-                        margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
-                        <XAxis dataKey="label" tick={TICK} />
-                        <YAxis tick={TICK} allowDecimals={false} />
-                        <Bar dataKey="count" fill="#1af9169a" radius={[4, 4, 0, 0]} name="Jumlah">
-                          <LabelList dataKey="count" content={<CenterLabel />} />
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <>
+                    <div className="h-[220px] sm:h-[240px] md:h-[280px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={[
+                            { label: t('done', lang), count: taskStats.completed },
+                            { label: t('pending', lang), count: taskStats.pending },
+                          ]}
+                          margin={{ top: 20, right: 8, left: -20, bottom: 0 }}
+                        >
+                          <CartesianGrid {...chartConfig.grid} />
+                          <XAxis dataKey="label" tick={chartConfig.tick} />
+                          <YAxis tick={chartConfig.tick} allowDecimals={false} />
+                          <Bar dataKey="count" radius={chartConfig.radius}>
+                            {[
+                              C.success,
+                              C.warning,
+                            ].map((color, index) => (
+                              <Cell key={`cell-${index}`} fill={color} />
+                            ))}
+                            <LabelList dataKey="count" {...labelProps} />
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <ChartLegend items={[
+                      { color: C.success, label: t('done', lang) },
+                      { color: C.warning, label: t('pending', lang) },
+                    ]} />
+                  </>
                 )}
               </CardContent>
             </Card>
@@ -268,8 +321,8 @@ export default function StatisticsPage() {
           <TabsContent value="weekly" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Trend Completion Rate</CardTitle>
-                <CardDescription>Persentase habit selesai per hari (7 hari terakhir)</CardDescription>
+                <CardTitle className="text-lg">{t('trendCompletionTitle', lang)}</CardTitle>
+                <CardDescription>{t('trendCompletionSubtitle', lang)}</CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -277,26 +330,44 @@ export default function StatisticsPage() {
                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                   </div>
                 ) : (
-                  <div className="relative h-[280px]">
+                  <div className="h-[220px] sm:h-[240px] md:h-[280px]">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={monthlyTrend} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
-                        <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#888' }} interval={0} />
-                        <YAxis tick={TICK} domain={[0, 100]} unit="%" />
-                        <Tooltip
-                          content={<TrendTooltip />}
-                          wrapperStyle={{ position: 'absolute', left: '50%', top: '40%', transform: 'translate(-50%, -50%)' }}
-                          cursor={false}
+                       <AreaChart data={monthlyTrend} margin={{ top: 8, right: 8, left: -20, bottom: 35 }}>
+                        <defs>
+                          <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor={C.success} stopOpacity={0.2} />
+                            <stop offset="100%" stopColor={C.success} stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid {...chartConfig.grid} />
+                        <Tooltip 
+                          contentStyle={{
+                            backgroundColor: "hsl(var(--card))",
+                            border: "1px solid hsl(var(--border))",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            padding: "4px 8px",
+                          }}
+                          formatter={(value: number) => [`${value}%`, "Completion"]}
                         />
-                        <Line
-                          type="monotone"
-                          dataKey="rate"
-                          stroke="#1af9169a"
-                          strokeWidth={2}
-                          dot={false}
-                          name="Completion %"
+                        <XAxis 
+                          dataKey="label" 
+                          tick={{ fontSize: 10, fill: "#a8a8a8" }} 
+                          interval={0}
+                          angle={-35}
+                          textAnchor="end"
+                          height={40}
                         />
-                      </LineChart>
+                        <YAxis tick={chartConfig.tick} domain={[0, 100]} unit="%" />
+                        <Area 
+                          type="monotone" 
+                          dataKey="rate" 
+                          stroke={C.success} 
+                          fill="url(#trendGradient)" 
+                          strokeWidth={2} 
+                          dot={false} 
+                        />
+                      </AreaChart>
                     </ResponsiveContainer>
                   </div>
                 )}
